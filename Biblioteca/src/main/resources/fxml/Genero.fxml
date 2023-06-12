@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="generoanchorPane" prefHeight="400.0" prefWidth="374.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LeitorController">
    <children>
-      <TableView fx:id="TableLeitor" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLeitor" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="296.0" prefWidth="166.0">
+      <TableView fx:id="TableLeitor" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableGenero" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="296.0" prefWidth="166.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="46.0" text="Id" />
           <TableColumn fx:id="nomeColumn" prefWidth="119.0" text="Gênero" />
