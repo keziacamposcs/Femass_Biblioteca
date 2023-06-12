@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="livroanchorPane" prefHeight="462.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LeitorController">
+   <children>
+      <TableView fx:id="TableLivro" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLeitor" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="296.0" prefWidth="526.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="nomeColumn" prefWidth="75.0" text="Nome" />
+            <TableColumn fx:id="anoColumn" prefWidth="75.0" text="Ano" />
+            <TableColumn fx:id="edicaoColumn" prefWidth="74.0" text="Edição" />
+            <TableColumn fx:id="generoColumn" prefWidth="75.0" text="Genero" />
+            <TableColumn fx:id="autorColumn" prefWidth="75.0" text="Autor" />
+            <TableColumn fx:id="copiaColumn" prefWidth="75.0" text="Cópias" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnLivro_excluir" layoutX="486.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnLivro_excluir" text="Excluir" />
+      <GridPane layoutX="552.0" layoutY="51.0" prefHeight="296.0" prefWidth="238.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="24.0" prefWidth="70.0" text="Nome" />
+            <Label text="Ano" GridPane.rowIndex="1" />
+            <Label text="Edição" GridPane.rowIndex="2" />
+             <Label text="Gênero" GridPane.rowIndex="3" />
+             <TextField fx:id="txtAno" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+             <TextField fx:id="txtNome" GridPane.columnIndex="1" />
+             <TextField fx:id="txtEdicao" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cboGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cboAutor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label prefHeight="17.0" prefWidth="42.0" text="Autor" GridPane.rowIndex="4" />
+            <Label text="Cópias" GridPane.rowIndex="5" />
+            <TextField fx:id="txtCopia" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         </children>
+      </GridPane>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="34.0" text="Livro" />
+      <Button fx:id="btnLivro_salvar" layoutX="645.0" layoutY="381.0" mnemonicParsing="false" onAction="#btnLivro_salvar" text="Salvar" />
+      <Button fx:id="btnAutor" layoutX="21.0" layoutY="381.0" mnemonicParsing="false" text="Autores" />
+      <Button fx:id="btnGenero" layoutX="110.0" layoutY="381.0" mnemonicParsing="false" text="Gêneros" />
+   </children>
+</AnchorPane>
