@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,26 +30,45 @@ import org.bib.entities.Professor;
 import org.bib.entities.Usuario;
 
 public class LeitorController {
+    @FXML
+    private AnchorPane leitoranchorPane;
+    @FXML
+    private Button btnProfessor;
 
+    
     private Dao<Leitor> daoLeitor;
     private Dao<Usuario> daoUsuario;
     private Dao<Professor> daoFormacao;
 
-    @FXML private TableView<Leitor> TableLeitor;
-    @FXML private TableColumn<Leitor, Long> idColumn;
-    @FXML private TableColumn<Leitor, String> nomeColumn;
-    @FXML private TableColumn<Leitor, String> telefoneColumn;
-    @FXML private TableColumn<Leitor, String> emailColumn;
-    @FXML private TableColumn<Leitor, Usuario> usuarioColumn;
+    @FXML 
+    private TableView<Leitor> TableLeitor;
+    @FXML 
+    private TableColumn<Leitor, Long> idColumn;
+    @FXML 
+    private TableColumn<Leitor, String> nomeColumn;
+    @FXML 
+    private TableColumn<Leitor, String> telefoneColumn;
+    @FXML 
+    private TableColumn<Leitor, String> emailColumn;
+    @FXML 
+    private TableColumn<Leitor, Usuario> usuarioColumn;
 
-    @FXML private TextField txtNome;
-    @FXML private TextField txtTelefone;
-    @FXML private TextField txtEmail;
-    @FXML private ComboBox<Usuario> cboUsuario;
-    @FXML private RadioButton radioProfessor;
-    @FXML private ComboBox<Professor> cboFormacao;
-    @FXML private RadioButton radioAluno;
-    @FXML private TextField txtMatricula;
+    @FXML 
+    private TextField txtNome;
+    @FXML 
+    private TextField txtTelefone;
+    @FXML 
+    private TextField txtEmail;
+    @FXML 
+    private ComboBox<Usuario> cboUsuario;
+    @FXML 
+    private RadioButton radioProfessor;
+    @FXML 
+    private ComboBox<Professor> cboFormacao;
+    @FXML 
+    private RadioButton radioAluno;
+    @FXML 
+    private TextField txtMatricula;
 
     public void initialize() {
         daoLeitor = new Dao<>(Leitor.class);
@@ -134,7 +154,7 @@ public class LeitorController {
     }
 
     @FXML
-    private void btnProfessor(ActionEvent event) {
+    private void professor_onAction(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Professor.fxml"));
             Scene scene = new Scene(root);
@@ -145,6 +165,7 @@ public class LeitorController {
             e.printStackTrace();
         }
     }
+    
 
     @FXML
     private void On_Key_Pressed_TableLeitor() {

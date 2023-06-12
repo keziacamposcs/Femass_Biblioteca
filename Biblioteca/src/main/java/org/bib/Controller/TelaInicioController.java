@@ -41,7 +41,7 @@ public class TelaInicioController {
     @FXML
     public void leitor_onAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Leitor.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Leitor.fxml"));
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
