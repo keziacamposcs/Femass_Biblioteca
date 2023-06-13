@@ -33,7 +33,7 @@ public class GeneroController implements Initializable {
     }
 
     private void configurarTabela() {
-        nomeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<String>(cellData.getValue().getNome()));
+        nomeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<String>(cellData.getValue().getNomeGenero()));
     }
 
 
@@ -44,7 +44,7 @@ public class GeneroController implements Initializable {
     @FXML
     private void btnGenero_salvar() {
         Genero genero = new Genero();
-        genero.setNome(txtNome.getText());
+        genero.setNomeGenero(txtNome.getText());
         dao.create(genero);
 
         txtNome.clear();

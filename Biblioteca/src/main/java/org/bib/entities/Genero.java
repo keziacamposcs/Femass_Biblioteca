@@ -12,8 +12,8 @@ import java.util.List;
 public class Genero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
+    private Long idGenero;
+    private String nomeGenero;
 
     @OneToMany(mappedBy = "genero")
     private List<Livro> livros;

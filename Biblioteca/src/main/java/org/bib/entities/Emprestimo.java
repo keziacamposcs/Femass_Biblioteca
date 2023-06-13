@@ -12,16 +12,16 @@ import lombok.*;
 public class Emprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEmprestimo;
     private LocalDate data;
     private LocalDate dataPrevistaEntrega;
     private LocalDate dataEntrega;
 
     @ManyToOne
-    @JoinColumn(name = "copia_id")
+    @JoinColumn(name = "copia_idEmprestimo")
     private Copia copia;
 
     @ManyToOne
-    @JoinColumn(name = "leitor_id")
+    @JoinColumn(name = "leitor_idEmprestimo")
     private Leitor leitor;
 }

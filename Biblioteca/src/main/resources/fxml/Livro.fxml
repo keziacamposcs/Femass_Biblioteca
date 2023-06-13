@@ -5,9 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="livroanchorPane" prefHeight="462.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LeitorController">
+<AnchorPane fx:id="livroanchorPane" prefHeight="462.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LivroController">
    <children>
-      <TableView fx:id="TableLivro" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLivro" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="296.0" prefWidth="526.0">
+      <TableView fx:id="TableLivro" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLivro" onMouseClicked="#On_Mouse_Clicked_TableLivro" prefHeight="296.0" prefWidth="526.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="nomeColumn" prefWidth="75.0" text="Nome" />

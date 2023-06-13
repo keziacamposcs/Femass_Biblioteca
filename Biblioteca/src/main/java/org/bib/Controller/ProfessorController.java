@@ -9,11 +9,14 @@ import org.bib.dao.ProfessorDao;
 import org.bib.dao.Dao;
 
 public class ProfessorController {
-    
+
     private Dao<Professor> dao;
-    @FXML private TableView<Professor> TableProfessor;
-    @FXML private TableColumn<Professor, String> nomeColumn;
-    @FXML private TextField txtNome;
+    @FXML
+    private TableView<Professor> TableProfessor;
+    @FXML
+    private TableColumn<Professor, String> formacaoColumn;
+    @FXML
+    private TextField txtFormacao;
 
     public void initialize() {
         this.dao = new ProfessorDao(Professor.class);
@@ -22,20 +25,20 @@ public class ProfessorController {
     }
 
     private void configurarTabela() {
-        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormacao()));
+        formacaoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFormacao()));
     }
 
-    private void atualizarTabela(){
+    private void atualizarTabela() {
         TableProfessor.getItems().setAll(dao.findAll());
     }
 
     @FXML
     private void btnProfessor_salvar() {
         Professor professor = new Professor();
-        professor.setNome(txtNome.getText());
+        professor.setFormacao(txtFormacao.getText());
         dao.create(professor);
 
-        txtNome.clear();
+        txtFormacao.clear();
         atualizarTabela();
     }
 
@@ -43,57 +46,30 @@ public class ProfessorController {
     private void btnProfessor_excluir() {
         Professor professor = TableProfessor.getSelectionModel().getSelectedItem();
         if (professor != null) {
-            dao.delete(professor);
+            dao.delete(professor.getIdLeitor());
             atualizarTabela();
         }
     }
 
-
-
-    //Aqui
     @FXML
-    private void On_Key_Pressed_TableLeitor() {
+    private void On_Key_Pressed_TableProfessor() {
+        clearFields();
         exibirDados();
     }
 
     @FXML
-    private void On_Mouse_Clicked_TableLeitor() {
+    private void On_Mouse_Clicked_TableProfessor() {
+        clearFields();
         exibirDados();
     }
-    private Professor getProfessorByFormacao(String formacao) {
-        for (Professor professor : cboFormacao.getItems()) {
-            if (professor.getFormacao().equals(formacao)) {
-                return professor;
-            }
-        }
-        return null;
-    }
-    
 
     private void exibirDados() {
-        Leitor leitor = TableLeitor.getSelectionModel().getSelectedItem();
-        if (leitor == null) return;    
-        txtTelefone.setText(leitor.getTelefone());
-        txtEmail.setText(leitor.getEmail());
-        txtNome.setText(leitor.getNome());
-    
-        if (leitor instanceof Professor) {
-            radioProfessor.setSelected(true);
-            cboFormacao.setDisable(false);
-            txtMatricula.setDisable(true);
-            Professor professor = getProfessorByFormacao(((Professor) leitor).getFormacao());
-            cboFormacao.getSelectionModel().select(professor);
-        } else if (leitor instanceof Aluno) {
-            radioAluno.setSelected(true);
-            cboFormacao.setDisable(true);
-            txtMatricula.setDisable(false);
-            txtMatricula.setText(((Aluno) leitor).getMatricula());
-        } else {
-            radioProfessor.setSelected(false);
-            cboFormacao.setDisable(true);
-            txtMatricula.setDisable(true);
-        }
-    
-        cboUsuario.getSelectionModel().select(leitor.getUsuario());
+        Professor professor = TableProfessor.getSelectionModel().getSelectedItem();
+        if (professor == null) return;
+        txtFormacao.setText(professor.getFormacao());
+    }
+
+    private void clearFields() {
+        txtFormacao.clear();
     }
 }

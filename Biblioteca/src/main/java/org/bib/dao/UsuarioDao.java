@@ -1,7 +1,10 @@
 package org.bib.dao;
 
+import org.bib.Controller.UsuarioController;
 import org.bib.entities.Usuario;
 import jakarta.persistence.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 public class UsuarioDao extends Dao<Usuario> {
     
@@ -26,4 +29,16 @@ public class UsuarioDao extends Dao<Usuario> {
         }
     }
 
+    public static void verificarEInserirUsuario() {
+        UsuarioDao daoUsuario = new UsuarioDao();
+    
+        // Verificar se a tabela está vazia
+        if (daoUsuario.isEmpty()) {
+            // Criar o usuário
+            Usuario usuario = new Usuario();
+            usuario.setLogin("admin");
+            usuario.setSenha("123");
+            daoUsuario.create(usuario);
+        }
+    }
 }

@@ -70,7 +70,7 @@ public class TelaInicioController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Usuario.fxml"));
             Scene scene = new Scene(root);
-            Stage stage = (Stage) telaincioanchor.getScene().getWindow();
+            Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -90,4 +90,5 @@ public class TelaInicioController {
             e.printStackTrace();
         }
     }
+    
 }

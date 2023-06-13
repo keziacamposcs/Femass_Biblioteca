@@ -33,7 +33,7 @@
             <Label text="Nome" />
             <Label text="Telefone" GridPane.rowIndex="1" />
             <Label text="E-mail" GridPane.rowIndex="2" />
-             <Label text="Usuario" GridPane.rowIndex="3" />
+             <Label text="Usuário" GridPane.rowIndex="3" />
              <TextField fx:id="txtTelefone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <TextField fx:id="txtNome" GridPane.columnIndex="1" />
              <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />

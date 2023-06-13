@@ -13,8 +13,8 @@ import lombok.*;
 public class Leitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
+    private Long idLeitor;
+    private String nomeLeitor;
     private String telefone;
     private String email;
 

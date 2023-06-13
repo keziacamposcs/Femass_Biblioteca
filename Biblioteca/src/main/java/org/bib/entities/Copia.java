@@ -11,7 +11,7 @@ import java.util.List;
 public class Copia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCopia;
 
     @ManyToOne
     @JoinColumn(name = "livro_id")

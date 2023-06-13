@@ -23,6 +23,6 @@
          </children>
       </GridPane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#303952" height="400.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="367.0" />
-      <Button layoutX="53.0" layoutY="291.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="261.0" text="Emprestimos" fx:id="btnEmprestimo" onAction="#emprestimo_onAction"/>
+      <Button layoutX="53.0" layoutY="291.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="261.0" text="Empréstimos" fx:id="btnEmprestimo" onAction="#emprestimo_onAction"/>
    </children>
 </AnchorPane>

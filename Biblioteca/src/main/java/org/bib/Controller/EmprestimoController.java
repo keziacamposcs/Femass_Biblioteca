@@ -19,12 +19,26 @@ import java.util.ResourceBundle;
 
 public class EmprestimoController implements Initializable {
 
-    @FXML private TableView<Emprestimo> TableEmprestimo;
-    @FXML private TableColumn<Emprestimo, String> dataColumn;
-    @FXML private TableColumn<Emprestimo, String> dataPrevistaColumn;
-    @FXML private TableColumn<Emprestimo, String> dataEntregaColumn;
-    @FXML private TableColumn<Emprestimo, Livro> livroColumn;
-    @FXML private TableColumn<Emprestimo, Leitor> leitorColumn;
+    // Table
+    @FXML 
+    private TableView<Emprestimo> TableEmprestimo;
+
+    @FXML 
+    private TableColumn<Emprestimo, String> dataColumn;
+    
+    @FXML 
+    private TableColumn<Emprestimo, String> dataPrevistaColumn;
+
+    @FXML 
+    private TableColumn<Emprestimo, String> dataEntregaColumn;
+
+    @FXML 
+    private TableColumn<Emprestimo, Livro> livroColumn;
+
+    @FXML 
+    private TableColumn<Emprestimo, Leitor> leitorColumn;
+    // Fim - Table
+
     
     @FXML private Button btnEmprestimo_excluir;
     @FXML private Button btnEmprestimo_salvar;

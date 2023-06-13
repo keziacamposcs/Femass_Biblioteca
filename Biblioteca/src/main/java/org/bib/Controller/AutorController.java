@@ -35,9 +35,9 @@ public class AutorController {
     @FXML
     private void initialize() {
 
-        idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getId()).asObject());
-        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
-        sobrenomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSobreNome()));
+        idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getIdAutor()).asObject());
+        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeAutor()));
+        sobrenomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSobrenomeAutor()));
         
         // Carregue os autores na tabela
         loadTableData();
@@ -49,8 +49,8 @@ public class AutorController {
         String sobrenome = txtSobrenome.getText();
 
         Autor autor = new Autor();
-        autor.setNome(nome);
-        autor.setSobreNome(sobrenome);
+        autor.setNomeAutor(nome);
+        autor.setSobrenomeAutor(sobrenome);
 
         autorDao.create(autor);
 
@@ -66,7 +66,7 @@ public class AutorController {
     private void btnAutor_excluir() {
         Autor selectedAutor = TableAutor.getSelectionModel().getSelectedItem();
         if (selectedAutor != null) {
-            autorDao.delete(selectedAutor.getId());
+            autorDao.delete(selectedAutor.getIdAutor());
 
             // Atualize os dados da tabela
             loadTableData();
@@ -86,8 +86,8 @@ public class AutorController {
     private void exibirDados() {
         Autor autor = TableAutor.getSelectionModel().getSelectedItem();
         if (autor == null) return;    
-        txtNome.setText(autor.getNome());
-        txtSobrenome.setText(autor.getSobreNome());
+        txtNome.setText(autor.getNomeAutor());
+        txtSobrenome.setText(autor.getSobrenomeAutor());
     }
 
     private void loadTableData() {
