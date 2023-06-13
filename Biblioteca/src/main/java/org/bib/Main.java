@@ -1,11 +1,9 @@
 package org.bib;
 
 //Dao
-
 import org.bib.dao.UsuarioDao;
 
 //Entities
-
 import org.bib.entities.Usuario;
 
 

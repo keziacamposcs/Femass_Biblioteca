@@ -1,62 +1,102 @@
 package org.bib.Controller;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import org.bib.dao.Dao;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+
 import org.bib.dao.GeneroDao;
 import org.bib.entities.Genero;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class GeneroController {
 
-public class GeneroController implements Initializable {
+    private GeneroDao dao;
 
-    @FXML private TableView<Genero> TableGenero;
-    @FXML private TableColumn<Genero, Integer> idColumn;
-    @FXML private TableColumn<Genero, String> nomeColumn;
-    
-    @FXML private Button btnGenero_excluir;
-    @FXML private Button btnGenero_salvar;
+    @FXML
+    private TableView<Genero> TableGenero;
+    @FXML
+    private TableColumn<Genero, Long> idColumn;
+    @FXML
+    private TableColumn<Genero, String> nomeColumn;
 
-    @FXML private TextField txtNome;
+    @FXML
+    private TextField txtNome;
 
-    private Dao<Genero> dao;
+    @FXML
+    private Button btnGenero_salvar;
+    @FXML
+    private Button btnGenero_excluir;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize() {
         this.dao = new GeneroDao(Genero.class);
-
         configurarTabela();
         atualizarTabela();
+
+        TableGenero.refresh();
     }
-
-    private void configurarTabela() {
-        nomeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<String>(cellData.getValue().getNomeGenero()));
-    }
-
-
     private void atualizarTabela() {
         TableGenero.getItems().setAll(dao.findAll());
     }
+    
+
+    private void configurarTabela() {
+        idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getIdGenero()).asObject());
+        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeGenero()));
+    }
+    
 
     @FXML
-    private void btnGenero_salvar() {
-        Genero genero = new Genero();
-        genero.setNomeGenero(txtNome.getText());
-        dao.create(genero);
+    private void btnGenero_salvar(ActionEvent event) {
+        Genero generoSelecionado = TableGenero.getSelectionModel().getSelectedItem();
+        String nome = txtNome.getText();
+        
+        if (generoSelecionado != null) {
+            generoSelecionado.setNomeGenero(nome);
+            dao.update(generoSelecionado);
+        } else {
+            Genero novoGenero = new Genero();
+            novoGenero.setNomeGenero(nome);
+            dao.create(novoGenero);
+        }
+        
+        clearFields();
+        TableGenero.refresh();
+    }
 
-        txtNome.clear();
-        atualizarTabela();
+
+    @FXML
+    private void btnGenero_excluir(ActionEvent event) {
+        Genero genero = TableGenero.getSelectionModel().getSelectedItem();
+        if (genero != null)
+        {
+            dao.delete(genero);
+            TableGenero.refresh();
+        }
     }
 
     @FXML
-    private void btnGenero_excluir() {
-        Genero genero = TableGenero.getSelectionModel().getSelectedItem();
-        if (genero != null) {
-            dao.delete(genero);
-            atualizarTabela();
-        }
+    private void On_Key_Pressed_TableGenero()
+    {
+        exibirDados();
+    }
+
+    @FXML
+    private void On_Mouse_Clicked_TableGenero()
+    {
+        exibirDados();
+    }
+
+    private void exibirDados()
+    {
+        txtNome.setText(TableGenero.getSelectionModel().getSelectedItem().getNomeGenero());
+    }
+
+    private void clearFields()
+    {
+        txtNome.clear();
     }
 }

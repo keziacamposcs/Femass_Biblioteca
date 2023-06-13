@@ -1,21 +1,33 @@
 package org.bib.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bib.dao.Dao;
-import org.bib.entities.Autor;
-import org.bib.entities.Copia;
-import org.bib.entities.Genero;
-import org.bib.entities.Livro;
-
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import org.bib.dao.Dao;
+import org.bib.entities.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LivroController {
+    @FXML
+    private AnchorPane livroanchorPane;
+
+    private Dao<Livro> daoLivro;
+    private Dao<Genero> daoGenero;
+    private Dao<Autor> daoAutor;
 
     @FXML
     private TableView<Livro> TableLivro;
@@ -24,15 +36,16 @@ public class LivroController {
     @FXML
     private TableColumn<Livro, String> nomeColumn;
     @FXML
-    private TableColumn<Livro, Integer> anoColumn;
+    private TableColumn<Livro, String> anoColumn;
     @FXML
-    private TableColumn<Livro, Integer> edicaoColumn;
+    private TableColumn<Livro, String> edicaoColumn;
     @FXML
-    private TableColumn<Livro, Genero> generoColumn;
+    private TableColumn<Livro, String> generoColumn;
     @FXML
-    private TableColumn<Livro, Autor> autorColumn;
+    private TableColumn<Livro, String> autorColumn;
     @FXML
-    private TableColumn<Livro, Integer> copiaColumn;
+    private TableColumn<Livro, String> copiaColumn;
+
     @FXML
     private TextField txtNome;
     @FXML
@@ -46,92 +59,147 @@ public class LivroController {
     @FXML
     private TextField txtCopia;
 
-    private Dao<Livro> daoLivro;
-    private Dao<Genero> daoGenero;
-    private Dao<Autor> daoAutor;
-
-    public void initialize()
-    {
+    public void initialize() {
         daoLivro = new Dao<>(Livro.class);
         daoGenero = new Dao<>(Genero.class);
         daoAutor = new Dao<>(Autor.class);
 
-        // Configurar colunas da tabela
-        idColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIdLivro()));
-        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeLivro()));
-        anoColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAno()));
-        generoColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getGenero()));
-
-        
-        // Carregar dados na tabela
-        TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
-    
-        // Carregar dados no ComboBox de Gênero
+        // ComboBox Genero
         cboGenero.setItems(FXCollections.observableArrayList(daoGenero.findAll()));
-    
-        // Carregar dados no ComboBox de Autor
+
+        cboGenero.setConverter(new StringConverter<Genero>() {
+            @Override
+            public String toString(Genero genero) {
+                return genero == null ? null : genero.getNomeGenero();
+            }
+
+            @Override
+            public Genero fromString(String string) {
+                return daoGenero.findAll().stream().filter(genero ->
+                        genero.getNomeGenero().equals(string)).findFirst().orElse(null);
+            }
+        });
+        // Fim - ComboBox Genero
+
+        // ComboBox Autor
         cboAutor.setItems(FXCollections.observableArrayList(daoAutor.findAll()));
-    }
 
-    @FXML
-    private void btnLivro_salvar() {
-        String nome = txtNome.getText();
-        int ano = Integer.parseInt(txtAno.getText());
-        String edicao = txtEdicao.getText();
-        Genero genero = cboGenero.getSelectionModel().getSelectedItem();
-        Autor autor = cboAutor.getSelectionModel().getSelectedItem();
-        int copia = Integer.parseInt(txtCopia.getText());
+        cboAutor.setConverter(new StringConverter<Autor>() {
+            @Override
+            public String toString(Autor autor) {
+                return autor == null ? null : autor.getNomeAutor();
+            }
 
-        Livro livro = new Livro();
-        livro.setNomeLivro(nome);
-        livro.setAno(ano);
-        livro.setEdicao(edicao);
-        livro.setGenero(genero);
-        livro.setAutores(List.of(autor));
-        livro.setCopias(new ArrayList<>());
+            @Override
+            public Autor fromString(String string) {
+                return daoAutor.findAll().stream().filter(autor ->
+                        autor.getNomeAutor().equals(string)).findFirst().orElse(null);
+            }
+        });
+        // Fim - ComboBox Autor
 
-        for (int i = 0; i < copia; i++) {
-            Copia novaCopia = new Copia();
-            novaCopia.setLivro(livro);
-            livro.getCopias().add(novaCopia);
-                }
+        // Configuração das colunas da tabela
+        idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getIdLivro()).asObject());
+        nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeLivro()));
+        anoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAno().toString()));
+        edicaoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEdicao()));
+        generoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGenero().getNomeGenero()));
+        autorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAutores().stream().map(Autor::getNomeAutor).collect(Collectors.joining(", "))));
+        copiaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCopias().size())));
 
-        daoLivro.create(livro);
-
-        clearFields();
+        // Preenchimento da tabela
         TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
     }
 
     @FXML
-    private void btnLivro_excluir() {
+    protected void btnLivro_salvar(ActionEvent event) {
         Livro livroSelecionado = TableLivro.getSelectionModel().getSelectedItem();
         if (livroSelecionado != null) {
-            daoLivro.delete(livroSelecionado.getIdLivro());
+            String nome = txtNome.getText();
+            Integer ano = Integer.parseInt(txtAno.getText());
+            String edicao = txtEdicao.getText();
+            Genero genero = cboGenero.getSelectionModel().getSelectedItem();
+            Autor autor = cboAutor.getSelectionModel().getSelectedItem();
+            List<Copia> copias = new ArrayList<>(); // Aqui, você pode precisar implementar um meio de adicionar/copiar cópias ao livro
+    
+            livroSelecionado.setNomeLivro(nome);
+            livroSelecionado.setAno(ano);
+            livroSelecionado.setEdicao(edicao);
+            livroSelecionado.setGenero(genero);
+            livroSelecionado.setAutores(Arrays.asList(autor)); // Isso é simplificado, considere uma maneira de permitir múltiplos autores
+            livroSelecionado.setCopias(copias);
+    
+            daoLivro.update(livroSelecionado);
+    
+            // Limpar campos após a atualização
+            clearFields();
+    
+            // Atualizar tabela
             TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
+        }
+    }
+    
+
+    @FXML
+    protected void btnLivro_excluir(ActionEvent event) {
+        Livro livroSelecionado = TableLivro.getSelectionModel().getSelectedItem();
+        if (livroSelecionado != null) {
+            daoLivro.delete(livroSelecionado);
+            TableLivro.getItems().remove(livroSelecionado);
+            TableLivro.refresh();
         }
     }
 
     @FXML
-    private void On_Key_Pressed_TableLivro() {
+    protected void On_Key_Pressed_TableLivro() {
         exibirDados();
     }
 
     @FXML
-    private void On_Mouse_Clicked_TableLeitor() {
+    protected void On_Mouse_Clicked_TableLivro() {
         exibirDados();
     }
 
     private void exibirDados() {
         Livro livro = TableLivro.getSelectionModel().getSelectedItem();
-        if (livro == null) return;
-
+        if (livro == null) return;   
         txtNome.setText(livro.getNomeLivro());
-        txtAno.setText(Integer.toString(livro.getAno()));
+        txtAno.setText(livro.getAno().toString());
         txtEdicao.setText(livro.getEdicao());
-        cboGenero.getSelectionModel().select(livro.getGenero());
-        cboAutor.getSelectionModel().select(livro.getAutores().get(0));
+        cboGenero.setValue(livro.getGenero());
+        cboAutor.setValue(livro.getAutores().get(0));
         txtCopia.setText(Integer.toString(livro.getCopias().size()));
     }
+
+    //Botão cadastrar Autores
+    @FXML
+    private void autor_onAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Autor.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // Fim - Botão cadastrar Autores
+
+    //Botão cadastrar Genero
+    @FXML
+    private void genero_onAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/Genero.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // Fim - Botão cadastrar Genero
 
     private void clearFields() {
         txtNome.clear();
@@ -141,5 +209,4 @@ public class LivroController {
         cboAutor.getSelectionModel().clearSelection();
         txtCopia.clear();
     }
-
 }

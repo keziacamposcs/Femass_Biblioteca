@@ -49,7 +49,7 @@
       </GridPane>
       <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="34.0" text="Livro" />
       <Button fx:id="btnLivro_salvar" layoutX="645.0" layoutY="381.0" mnemonicParsing="false" onAction="#btnLivro_salvar" text="Salvar" />
-      <Button fx:id="btnAutor" layoutX="21.0" layoutY="381.0" mnemonicParsing="false" text="Autores" />
-      <Button fx:id="btnGenero" layoutX="110.0" layoutY="381.0" mnemonicParsing="false" text="Gêneros" />
+<Button fx:id="btnAutor" onAction="#autor_onAction" layoutX="21.0" layoutY="381.0" mnemonicParsing="false" text="Autores" />
+<Button fx:id="btnGenero" onAction="#genero_onAction" layoutX="110.0" layoutY="381.0" mnemonicParsing="false" text="Gêneros" />
    </children>
 </AnchorPane>

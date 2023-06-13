@@ -1,17 +1,20 @@
 package org.bib.Controller;
 
-import org.bib.dao.AutorDao;
-import org.bib.entities.Autor;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
+import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
+
+import org.bib.dao.AutorDao;
+import org.bib.entities.Autor;
 
 public class AutorController {
+
+    private AutorDao dao;
 
     @FXML
     private TableView<Autor> TableAutor;
@@ -21,61 +24,57 @@ public class AutorController {
     private TableColumn<Autor, String> nomeColumn;
     @FXML
     private TableColumn<Autor, String> sobrenomeColumn;
+    
     @FXML
     private TextField txtNome;
     @FXML
     private TextField txtSobrenome;
+    @FXML
+    private Button btnAutor_salvar;
+    @FXML
+    private Button btnAutor_excluir;
 
-    private AutorDao autorDao;
-
-    public AutorController() {
-        autorDao = new AutorDao();
+    public void initialize() {
+        this.dao = new AutorDao(Autor.class);
+        configurarTabela();
+        atualizarTabela();
     }
 
-    @FXML
-    private void initialize() {
-
+    private void configurarTabela() {
         idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getIdAutor()).asObject());
         nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeAutor()));
         sobrenomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSobrenomeAutor()));
-        
-        // Carregue os autores na tabela
-        loadTableData();
+    }
+
+    private void atualizarTabela() {
+        TableAutor.getItems().setAll(dao.findAll());
     }
 
     @FXML
-    private void btnAutor_salvar() {
-        String nome = txtNome.getText();
-        String sobrenome = txtSobrenome.getText();
+    private void btnAutor_salvar(ActionEvent event)
+    {
+        Autor autorSelecionado = TableAutor.getSelectionModel().getSelectedItem();
+        if (autorSelecionado != null)
+        {
+            String nome = txtNome.getText();
+            String sobrenome = txtSobrenome.getText();
 
-        Autor autor = new Autor();
-        autor.setNomeAutor(nome);
-        autor.setSobrenomeAutor(sobrenome);
+            autorSelecionado.setNomeAutor(nome);
+            autorSelecionado.setSobrenomeAutor(sobrenome);
+            dao.update(autorSelecionado);
 
-        autorDao.create(autor);
-
-        // Limpe o campo de texto
-        txtNome.clear();
-        txtSobrenome.clear();
-
-        // Atualize os dados da tabela
-        loadTableData();
-    }
-
-    @FXML
-    private void btnAutor_excluir() {
-        Autor selectedAutor = TableAutor.getSelectionModel().getSelectedItem();
-        if (selectedAutor != null) {
-            autorDao.delete(selectedAutor.getIdAutor());
-
-            // Atualize os dados da tabela
-            loadTableData();
+            clearFields();
+            atualizarTabela();
         }
     }
 
     @FXML
-    private void On_Key_Pressed_TableAutor() {
-        exibirDados();
+    private void btnAutor_excluir() {
+        Autor autor = TableAutor.getSelectionModel().getSelectedItem();
+        if (autor != null) {
+            dao.delete(autor);
+            atualizarTabela();
+        }
     }
 
     @FXML
@@ -83,15 +82,21 @@ public class AutorController {
         exibirDados();
     }
 
-    private void exibirDados() {
-        Autor autor = TableAutor.getSelectionModel().getSelectedItem();
-        if (autor == null) return;    
-        txtNome.setText(autor.getNomeAutor());
-        txtSobrenome.setText(autor.getSobrenomeAutor());
+    @FXML
+    private void On_Key_Pressed_TableAutor() {
+        exibirDados();
     }
 
-    private void loadTableData() {
-        ObservableList<Autor> autores = FXCollections.observableArrayList(autorDao.findAll());
-        TableAutor.setItems(autores);
+    private void exibirDados() {
+        Autor autor = TableAutor.getSelectionModel().getSelectedItem();
+        if (autor != null) {
+            txtNome.setText(autor.getNomeAutor());
+            txtSobrenome.setText(autor.getSobrenomeAutor());
+        }
+    }
+
+    private void clearFields() {
+        txtNome.clear();
+        txtSobrenome.clear();
     }
 }

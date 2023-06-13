@@ -28,15 +28,15 @@ import org.bib.entities.Professor;
 import org.bib.entities.Usuario;
 
 public class LeitorController {
+
+    private Dao<Leitor> daoLeitor;
+    private Dao<Usuario> daoUsuario;
+    private Dao<Professor> daoFormacao;
+
     @FXML
     private AnchorPane leitoranchorPane;
     @FXML
     private Button btnProfessor;
-
-    
-    private Dao<Leitor> daoLeitor;
-    private Dao<Usuario> daoUsuario;
-    private Dao<Professor> daoFormacao;
 
     @FXML 
     private TableView<Leitor> TableLeitor;
@@ -194,6 +194,7 @@ public class LeitorController {
         
             // Atualizar tabela
             TableLeitor.setItems(FXCollections.observableArrayList(daoLeitor.findAll()));
+            TableLeitor.refresh();
         }
     }
     
