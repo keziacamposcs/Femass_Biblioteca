@@ -1,6 +1,8 @@
 package org.bib.Controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -9,26 +11,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import org.bib.dao.Dao;
+import org.bib.dao.AutorDao;
+import org.bib.dao.CopiaDao;
+import org.bib.dao.GeneroDao;
+import org.bib.dao.LivroDao;
 import org.bib.entities.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LivroController {
     @FXML
     private AnchorPane livroanchorPane;
 
-    private Dao<Livro> daoLivro;
-    private Dao<Genero> daoGenero;
-    private Dao<Autor> daoAutor;
+    private LivroDao daoLivro;
+    private GeneroDao daoGenero;
+    private AutorDao daoAutor;
+    private CopiaDao daoCopia;
 
+    // Tabela
     @FXML
     private TableView<Livro> TableLivro;
     @FXML
@@ -39,13 +44,17 @@ public class LivroController {
     private TableColumn<Livro, String> anoColumn;
     @FXML
     private TableColumn<Livro, String> edicaoColumn;
+    
     @FXML
-    private TableColumn<Livro, String> generoColumn;
+    private TableColumn<Livro, List<Genero>> generoColumn;
     @FXML
-    private TableColumn<Livro, String> autorColumn;
+    private TableColumn<Livro, List<Autor>> autorColumn;
+
     @FXML
     private TableColumn<Livro, String> copiaColumn;
+    // Fim - Tabela
 
+    // Campos
     @FXML
     private TextField txtNome;
     @FXML
@@ -53,93 +62,193 @@ public class LivroController {
     @FXML
     private TextField txtEdicao;
     @FXML
-    private ComboBox<Genero> cboGenero;
-    @FXML
-    private ComboBox<Autor> cboAutor;
-    @FXML
     private TextField txtCopia;
+    // Fim - Campos
+
+    // Genero e Autor
+    @FXML
+    private ListView<Genero> listGenero;
+    @FXML
+    private ListView<Autor> listAutor;
+    // Fim - Genero e Autor
+
+    // Botões
+    @FXML
+    private Button btnLivro_salvar;
+    @FXML
+    private Button btnLivro_excluir;
+    // Fim - Botões
+
 
     public void initialize() {
-        daoLivro = new Dao<>(Livro.class);
-        daoGenero = new Dao<>(Genero.class);
-        daoAutor = new Dao<>(Autor.class);
+        this.daoLivro = new LivroDao(Livro.class);
+        this.daoGenero = new GeneroDao(Genero.class);
+        this.daoAutor = new AutorDao(Autor.class);
+        this.daoCopia = new CopiaDao(Copia.class);
+        configurarTabela();
 
-        // ComboBox Genero
-        cboGenero.setItems(FXCollections.observableArrayList(daoGenero.findAll()));
-
-        cboGenero.setConverter(new StringConverter<Genero>() {
+        // Lista Genero
+        listGenero.setItems(FXCollections.observableArrayList(daoGenero.findAll()));
+        listGenero.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listGenero.setCellFactory(param -> new ListCell<Genero>() {
             @Override
-            public String toString(Genero genero) {
-                return genero == null ? null : genero.getNomeGenero();
-            }
-
-            @Override
-            public Genero fromString(String string) {
-                return daoGenero.findAll().stream().filter(genero ->
-                        genero.getNomeGenero().equals(string)).findFirst().orElse(null);
-            }
-        });
-        // Fim - ComboBox Genero
-
-        // ComboBox Autor
-        cboAutor.setItems(FXCollections.observableArrayList(daoAutor.findAll()));
-
-        cboAutor.setConverter(new StringConverter<Autor>() {
-            @Override
-            public String toString(Autor autor) {
-                return autor == null ? null : autor.getNomeAutor();
-            }
-
-            @Override
-            public Autor fromString(String string) {
-                return daoAutor.findAll().stream().filter(autor ->
-                        autor.getNomeAutor().equals(string)).findFirst().orElse(null);
+            protected void updateItem(Genero genero, boolean empty) {
+                super.updateItem(genero, empty);
+                if (empty || genero == null) {
+                    setText(null);
+                } else {
+                    setText(genero.getNomeGenero());
+                }
             }
         });
-        // Fim - ComboBox Autor
+        // Fim - Lista Genero
 
+        // Lista Autor
+        listAutor.setItems(FXCollections.observableArrayList(daoAutor.findAll()));
+        listAutor.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listAutor.setCellFactory(param -> new ListCell<Autor>() {
+            @Override
+            protected void updateItem(Autor autor, boolean empty) {
+                super.updateItem(autor, empty);
+                if (empty || autor == null) {
+                    setText(null);
+                } else {
+                    setText(autor.getNomeAutor());
+                }
+            }
+        });
+        // Fim - Lista Autor
+
+        TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
+        TableLivro.refresh();
+    }
+
+    private void configurarTabela() {
         // Configuração das colunas da tabela
         idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getIdLivro()).asObject());
         nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeLivro()));
         anoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAno().toString()));
         edicaoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEdicao()));
-        generoColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGenero().getNomeGenero()));
-        autorColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAutores().stream().map(Autor::getNomeAutor).collect(Collectors.joining(", "))));
-        copiaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().getCopias().size())));
 
-        // Preenchimento da tabela
-        TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
+        generoColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getGeneros()));
+        generoColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(List<Genero> generos, boolean empty) {
+                super.updateItem(generos, empty);
+
+                if (generos == null || generos.isEmpty() || empty) {
+                    setText(null);
+                } else {
+                    setText(getGenerosAsString(generos));
+                }
+            }
+        });
+        autorColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAutores()));
+        autorColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(List<Autor> autores, boolean empty) {
+                super.updateItem(autores, empty);
+
+                if (autores == null || autores.isEmpty() || empty) {
+                    setText(null);
+                } else {
+                    setText(getAutoresAsString(autores));
+                }
+            }
+        });
+
+        copiaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(getNumeroCopias(cellData.getValue()))));
+    }
+
+    private String getGenerosAsString(List<Genero> generos) {
+        StringBuilder sb = new StringBuilder();
+        for (Genero genero : generos) {
+            sb.append(genero.getNomeGenero()).append(", ");
+        }
+        if (sb.length() > 0) {
+            sb.delete(sb.length() - 2, sb.length()); // Remove a última vírgula e espaço
+        }
+        return sb.toString();
+    }
+
+    private String getAutoresAsString(List<Autor> autores) {
+        StringBuilder sb = new StringBuilder();
+        for (Autor autor : autores) {
+            sb.append(autor.getNomeAutor()).append(", ");
+        }
+        if (sb.length() > 0) {
+            sb.delete(sb.length() - 2, sb.length()); // Remove a última vírgula e espaço
+        }
+        return sb.toString();
+    }
+
+    private int getNumeroCopias(Livro livro) {
+        List<Copia> copias = daoCopia.findByLivro(livro);
+        return copias.size();
     }
 
     @FXML
-    protected void btnLivro_salvar(ActionEvent event) {
+    protected void btnLivro_salvar(ActionEvent event) 
+    {
         Livro livroSelecionado = TableLivro.getSelectionModel().getSelectedItem();
-        if (livroSelecionado != null) {
-            String nome = txtNome.getText();
-            Integer ano = Integer.parseInt(txtAno.getText());
-            String edicao = txtEdicao.getText();
-            Genero genero = cboGenero.getSelectionModel().getSelectedItem();
-            Autor autor = cboAutor.getSelectionModel().getSelectedItem();
-            List<Copia> copias = new ArrayList<>(); // Aqui, você pode precisar implementar um meio de adicionar/copiar cópias ao livro
-    
-            livroSelecionado.setNomeLivro(nome);
-            livroSelecionado.setAno(ano);
-            livroSelecionado.setEdicao(edicao);
-            livroSelecionado.setGenero(genero);
-            livroSelecionado.setAutores(Arrays.asList(autor)); // Isso é simplificado, considere uma maneira de permitir múltiplos autores
-            livroSelecionado.setCopias(copias);
-    
-            daoLivro.update(livroSelecionado);
-    
-            // Limpar campos após a atualização
-            clearFields();
-    
-            // Atualizar tabela
-            TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
+        
+        if (livroSelecionado == null) {
+            // Criar um novo livro
+            Livro novoLivro = new Livro();
+            novoLivro.setNomeLivro(txtNome.getText());
+            novoLivro.setAno(Integer.parseInt(txtAno.getText()));
+            novoLivro.setEdicao(txtEdicao.getText());
+            novoLivro.setGeneros(listGenero.getSelectionModel().getSelectedItems());
+            novoLivro.setAutores(listAutor.getSelectionModel().getSelectedItems());
+            
+            // Salvando o livro
+            daoLivro.create(novoLivro);
+
+            int numeroDeCopias = Integer.parseInt(txtCopia.getText());
+            for (int i = 0; i < numeroDeCopias; i++) {
+                Copia copia = new Copia();
+                copia.setLivro(novoLivro);
+                daoCopia.create(copia);
+            }
         }
+        else 
+        {
+            // Atualizar um livro existente
+            livroSelecionado.setNomeLivro(txtNome.getText());
+            livroSelecionado.setAno(Integer.parseInt(txtAno.getText()));
+            livroSelecionado.setEdicao(txtEdicao.getText());
+            livroSelecionado.setGeneros(new ArrayList<>(listGenero.getSelectionModel().getSelectedItems()));
+            livroSelecionado.setAutores(new ArrayList<>(listAutor.getSelectionModel().getSelectedItems()));
+
+
+            int novoNumeroDeCopias = Integer.parseInt(txtCopia.getText());
+            int atualNumeroDeCopias = daoCopia.countByLivro(livroSelecionado);
+            
+            if (novoNumeroDeCopias > atualNumeroDeCopias) {
+                for (int i = 0; i < (novoNumeroDeCopias - atualNumeroDeCopias); i++) {
+                    Copia copia = new Copia();
+                    copia.setLivro(livroSelecionado);
+                    daoCopia.create(copia);
+                }
+            }
+            else if (novoNumeroDeCopias < atualNumeroDeCopias) 
+            {
+                for (int i = 0; i < (atualNumeroDeCopias - novoNumeroDeCopias); i++) {
+                    List<Copia> copias = daoCopia.findByLivro(livroSelecionado);
+                    if (!copias.isEmpty()) {
+                        Copia copiaParaExcluir = copias.get(0);
+                        daoCopia.delete(copiaParaExcluir);
+                    }
+                }
+            }
+            // Atualizar o livro
+            daoLivro.updateLivro(livroSelecionado);
+        }
+        clearFields();
+        TableLivro.setItems(FXCollections.observableArrayList(daoLivro.findAll()));
+        TableLivro.refresh();
     }
     
-
     @FXML
     protected void btnLivro_excluir(ActionEvent event) {
         Livro livroSelecionado = TableLivro.getSelectionModel().getSelectedItem();
@@ -162,16 +271,34 @@ public class LivroController {
 
     private void exibirDados() {
         Livro livro = TableLivro.getSelectionModel().getSelectedItem();
-        if (livro == null) return;   
-        txtNome.setText(livro.getNomeLivro());
-        txtAno.setText(livro.getAno().toString());
-        txtEdicao.setText(livro.getEdicao());
-        cboGenero.setValue(livro.getGenero());
-        cboAutor.setValue(livro.getAutores().get(0));
-        txtCopia.setText(Integer.toString(livro.getCopias().size()));
+        if (livro != null) {
+            txtNome.setText(livro.getNomeLivro());
+            txtAno.setText(String.valueOf(livro.getAno()));
+            txtEdicao.setText(livro.getEdicao());
+            txtCopia.setText(String.valueOf(getNumeroCopias(livro)));
+
+            List<Integer> generoIndices = new ArrayList<>();
+            for (Genero genero : livro.getGeneros()) {
+                generoIndices.add(listGenero.getItems().indexOf(genero));
+            }
+            listGenero.getSelectionModel().clearSelection();
+            for (int index : generoIndices) {
+                listGenero.getSelectionModel().selectIndices(index);
+            }
+
+            List<Integer> autorIndices = new ArrayList<>();
+            for (Autor autor : livro.getAutores()) {
+                autorIndices.add(listAutor.getItems().indexOf(autor));
+            }
+            listAutor.getSelectionModel().clearSelection();
+            for (int index : autorIndices) {
+                listAutor.getSelectionModel().selectIndices(index);
+            }
+        }
     }
 
-    //Botão cadastrar Autores
+
+
     @FXML
     private void autor_onAction(ActionEvent event) {
         try {
@@ -184,9 +311,7 @@ public class LivroController {
             e.printStackTrace();
         }
     }
-    // Fim - Botão cadastrar Autores
 
-    //Botão cadastrar Genero
     @FXML
     private void genero_onAction(ActionEvent event) {
         try {
@@ -199,14 +324,11 @@ public class LivroController {
             e.printStackTrace();
         }
     }
-    // Fim - Botão cadastrar Genero
 
     private void clearFields() {
         txtNome.clear();
         txtAno.clear();
         txtEdicao.clear();
-        cboGenero.getSelectionModel().clearSelection();
-        cboAutor.getSelectionModel().clearSelection();
         txtCopia.clear();
     }
 }

@@ -15,6 +15,6 @@ public class Genero {
     private Long idGenero;
     private String nomeGenero;
 
-    @OneToMany(mappedBy = "genero")
+    @ManyToMany(mappedBy = "generos")
     private List<Livro> livros;
 }

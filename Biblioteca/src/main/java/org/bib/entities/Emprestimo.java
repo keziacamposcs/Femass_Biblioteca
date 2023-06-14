@@ -18,7 +18,7 @@ public class Emprestimo {
     private LocalDate dataEntrega;
 
     @ManyToOne
-    @JoinColumn(name = "copia_idEmprestimo")
+    @JoinColumn(name = "copia_id")
     private Copia copia;
 
     @ManyToOne

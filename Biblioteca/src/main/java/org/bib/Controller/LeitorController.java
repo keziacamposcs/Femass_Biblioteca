@@ -156,48 +156,56 @@ public class LeitorController {
     }
 
     @FXML
-    private void btnLeitor_salvar(ActionEvent event)
-    {
-        Leitor leitorSelecionado = TableLeitor.getSelectionModel().getSelectedItem();
-        if (leitorSelecionado != null) {
-            String nome = txtNome.getText();
-            String telefone = txtTelefone.getText();
-            String email = txtEmail.getText();
-            Usuario usuario = cboUsuario.getSelectionModel().getSelectedItem();
-        
-            if (leitorSelecionado instanceof Professor) {
-                Professor professor = (Professor) leitorSelecionado;
-                professor.setNomeLeitor(nome);
-                professor.setTelefone(telefone);
-                professor.setEmail(email);
-                professor.setUsuario(usuario);
-                professor.setFormacao(cboFormacao.getSelectionModel().getSelectedItem().getFormacao());
+    private void btnLeitor_salvar(ActionEvent event) {
+        String nome = txtNome.getText();
+        String telefone = txtTelefone.getText();
+        String email = txtEmail.getText();
+        Usuario usuario = cboUsuario.getSelectionModel().getSelectedItem();
+
+        if (radioProfessor.isSelected()) {
+            Professor professor = TableLeitor.getSelectionModel().getSelectedItem() instanceof Professor
+                    ? (Professor) TableLeitor.getSelectionModel().getSelectedItem()
+                    : new Professor();
+            professor.setNomeLeitor(nome);
+            professor.setTelefone(telefone);
+            professor.setEmail(email);
+            professor.setUsuario(usuario);
+            professor.setFormacao(cboFormacao.getSelectionModel().getSelectedItem().getFormacao());
+
+            if (professor.getIdLeitor() != null) {
                 daoLeitor.update(professor);
-            } else if (leitorSelecionado instanceof Aluno) {
-                Aluno aluno = (Aluno) leitorSelecionado;
-                aluno.setNomeLeitor(nome);
-                aluno.setTelefone(telefone);
-                aluno.setEmail(email);
-                aluno.setUsuario(usuario);
-                aluno.setMatricula(txtMatricula.getText());
+            } else {
+                daoLeitor.create(professor);
+            }
+        } else if (radioAluno.isSelected()) {
+            Aluno aluno = TableLeitor.getSelectionModel().getSelectedItem() instanceof Aluno
+                    ? (Aluno) TableLeitor.getSelectionModel().getSelectedItem()
+                    : new Aluno();
+            aluno.setNomeLeitor(nome);
+            aluno.setTelefone(telefone);
+            aluno.setEmail(email);
+            aluno.setUsuario(usuario);
+            aluno.setMatricula(txtMatricula.getText());
+
+            if (aluno.getIdLeitor() != null) {
                 daoLeitor.update(aluno);
             } else {
-                leitorSelecionado.setNomeLeitor(nome);
-                leitorSelecionado.setTelefone(telefone);
-                leitorSelecionado.setEmail(email);
-                leitorSelecionado.setUsuario(usuario);
-                daoLeitor.update(leitorSelecionado);
+                daoLeitor.create(aluno);
             }
-        
-            // Limpar campos após a atualização
-            clearFields();
-        
-            // Atualizar tabela
-            TableLeitor.setItems(FXCollections.observableArrayList(daoLeitor.findAll()));
-            TableLeitor.refresh();
+        } else {
+            // Se nenhum RadioButton estiver selecionado, não faça nada ou exiba uma mensagem de erro.
+            return;
         }
+
+        // Limpar campos após a atualização
+        clearFields();
+
+        // Atualizar tabela
+        TableLeitor.setItems(FXCollections.observableArrayList(daoLeitor.findAll()));
+        TableLeitor.refresh();
     }
-    
+
+
     @FXML
     private void btnLeitor_excluir(ActionEvent event) {
         Leitor leitorSelecionado = TableLeitor.getSelectionModel().getSelectedItem();

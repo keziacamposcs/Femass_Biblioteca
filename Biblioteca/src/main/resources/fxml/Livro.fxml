@@ -4,7 +4,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <AnchorPane fx:id="livroanchorPane" prefHeight="462.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LivroController">
    <children>
       <TableView fx:id="TableLivro" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLivro" onMouseClicked="#On_Mouse_Clicked_TableLivro" prefHeight="296.0" prefWidth="526.0">
@@ -40,8 +39,8 @@
              <TextField fx:id="txtAno" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <TextField fx:id="txtNome" GridPane.columnIndex="1" />
              <TextField fx:id="txtEdicao" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cboGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="cboAutor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ListView fx:id="listGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ListView fx:id="listAutor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label prefHeight="17.0" prefWidth="42.0" text="Autor" GridPane.rowIndex="4" />
             <Label text="Cópias" GridPane.rowIndex="5" />
             <TextField fx:id="txtCopia" GridPane.columnIndex="1" GridPane.rowIndex="5" />

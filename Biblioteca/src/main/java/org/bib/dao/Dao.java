@@ -82,4 +82,12 @@ public class Dao<E> {
     public E findById(Object id) {
         return em.find(entity, id);
     }
+
+    public E updateLivro (E object) {
+    abrir();
+    E managed = em.merge(object);
+    fechar();
+    return managed;
+}
+
 }

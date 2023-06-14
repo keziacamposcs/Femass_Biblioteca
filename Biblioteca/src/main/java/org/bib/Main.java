@@ -8,7 +8,7 @@ import org.bib.entities.Usuario;
 
 
 public class Main {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         EntryPoint.main(args);
         verificarEInserirUsuario();
     }
@@ -17,8 +17,7 @@ public class Main {
         UsuarioDao usuarioDao = new UsuarioDao();
         
         // Verificar se a tabela está vazia
-        if (usuarioDao.isEmpty())
-        {
+        if (usuarioDao.isEmpty()) {
             // Criar o usuário
             Usuario usuario = new Usuario();
             usuario.setLogin("admin");
@@ -27,3 +26,4 @@ public class Main {
         }
     }
 }
+

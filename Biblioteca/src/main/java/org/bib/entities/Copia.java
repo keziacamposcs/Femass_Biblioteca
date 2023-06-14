@@ -1,7 +1,7 @@
 package org.bib.entities;
-import jakarta.persistence.*;
+
 import lombok.*;
-import java.util.List;
+import jakarta.persistence.*;
 
 @Getter
 @Setter
@@ -17,6 +17,4 @@ public class Copia {
     @JoinColumn(name = "livro_id")
     private Livro livro;
 
-    @OneToMany(mappedBy = "copia")
-    private List<Emprestimo> emprestimos;
 }

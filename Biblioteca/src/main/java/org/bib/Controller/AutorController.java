@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 
 import org.bib.dao.AutorDao;
@@ -53,19 +54,29 @@ public class AutorController {
     @FXML
     private void btnAutor_salvar(ActionEvent event)
     {
-        Autor autorSelecionado = TableAutor.getSelectionModel().getSelectedItem();
-        if (autorSelecionado != null)
-        {
-            String nome = txtNome.getText();
-            String sobrenome = txtSobrenome.getText();
+        String nome = txtNome.getText();
+        String sobrenome = txtSobrenome.getText();
 
+        Autor autorSelecionado = TableAutor.getSelectionModel().getSelectedItem();
+        
+        if(autorSelecionado == null)
+        {
+            // Nenhum selecionado, criar novo
+            Autor autor = new Autor();
+            autor.setNomeAutor(nome);
+            autor.setSobrenomeAutor(sobrenome);
+            dao.create(autor);
+        }
+        else
+        {
+            // Atualizar
             autorSelecionado.setNomeAutor(nome);
             autorSelecionado.setSobrenomeAutor(sobrenome);
             dao.update(autorSelecionado);
-
-            clearFields();
-            atualizarTabela();
         }
+        clearFields();
+        TableAutor.setItems(FXCollections.observableArrayList(dao.findAll()));
+        TableAutor.refresh();
     }
 
     @FXML

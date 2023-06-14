@@ -7,6 +7,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 
 import org.bib.dao.GeneroDao;
@@ -51,19 +52,25 @@ public class GeneroController {
 
     @FXML
     private void btnGenero_salvar(ActionEvent event) {
-        Genero generoSelecionado = TableGenero.getSelectionModel().getSelectedItem();
         String nome = txtNome.getText();
+
+        Genero generoSelecionado = TableGenero.getSelectionModel().getSelectedItem();
         
-        if (generoSelecionado != null) {
-            generoSelecionado.setNomeGenero(nome);
-            dao.update(generoSelecionado);
-        } else {
+        if (generoSelecionado == null) {
+            // Nenhum selecionado, criar novo
             Genero novoGenero = new Genero();
             novoGenero.setNomeGenero(nome);
             dao.create(novoGenero);
         }
-        
+        else 
+        {
+            // Atualizar
+            generoSelecionado.setNomeGenero(nome);
+            dao.update(generoSelecionado);
+        }
         clearFields();
+
+        TableGenero.setItems(FXCollections.observableArrayList(dao.findAll()));
         TableGenero.refresh();
     }
 

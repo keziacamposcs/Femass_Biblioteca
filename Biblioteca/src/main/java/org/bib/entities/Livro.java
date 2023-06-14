@@ -17,12 +17,15 @@ public class Livro {
     private Integer ano;
     private String edicao;
 
-    @OneToMany(mappedBy = "livro")
+    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Copia> copias;
 
-    @ManyToOne
-    @JoinColumn(name = "genero_id")
-    private Genero genero;
+    @ManyToMany
+    @JoinTable(
+        name = "livro_genero",
+        joinColumns = @JoinColumn(name = "livro_id"),
+        inverseJoinColumns = @JoinColumn(name = "genero_id"))
+    private List<Genero> generos;
 
     @ManyToMany
     @JoinTable(
