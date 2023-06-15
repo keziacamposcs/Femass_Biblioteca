@@ -141,8 +141,6 @@ public class LeitorController {
         nomeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomeLeitor()));
         telefoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTelefone()));
         emailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-        //usuarioColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getUsuario()));
-        //usuarioColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsuario().getLogin()));
         usuarioColumn.setCellValueFactory(cellData -> {
             if (cellData.getValue().getUsuario() != null) {
                 return new SimpleStringProperty(cellData.getValue().getUsuario().getLogin());

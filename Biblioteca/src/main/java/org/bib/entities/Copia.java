@@ -17,4 +17,8 @@ public class Copia {
     @JoinColumn(name = "livro_id")
     private Livro livro;
 
+    @Override
+    public String toString() {
+        return livro.getNomeLivro(); 
+    }
 }

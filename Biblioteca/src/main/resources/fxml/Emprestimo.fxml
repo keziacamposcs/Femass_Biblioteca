@@ -4,19 +4,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="emprestimoanchorPane" prefHeight="400.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.EmprestimoController">
+<AnchorPane fx:id="emprestimoanchorPane" prefHeight="400.0" prefWidth="767.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.EmprestimoController">
    <children>
-      <TableView fx:id="TableEmprestimo" layoutX="17.0" layoutY="54.0" onKeyPressed="#On_Key_Pressed_TableEmprestimo" onMouseClicked="#On_Mouse_Clicked_TableEmprestimo" prefHeight="294.0" prefWidth="420.0">
+      <TableView fx:id="TableEmprestimo" layoutX="17.0" layoutY="54.0" onKeyPressed="#On_Key_Pressed_TableEmprestimo" onMouseClicked="#On_Mouse_Clicked_TableEmprestimo" prefHeight="294.0" prefWidth="498.0">
         <columns>
           <TableColumn fx:id="dataColumn" prefWidth="70.0" text="Data" />
             <TableColumn fx:id="dataPrevistaColumn" prefWidth="83.0" text="Data Prevista" />
             <TableColumn fx:id="dataEntregaColumn" minWidth="4.0" prefWidth="98.0" text="Data de Entrega" />
-            <TableColumn fx:id="livroColumn" prefWidth="95.0" text="Livro (Cópia)" />
+            <TableColumn fx:id="copiaColumn" prefWidth="95.0" text="Livro (Cópia)" />
             <TableColumn fx:id="leitorColumn" prefWidth="75.0" text="Leitor" />
+            <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
         </columns>
       </TableView>
-      <Button fx:id="btnEmprestimo_excluir" layoutX="383.0" layoutY="360.0" mnemonicParsing="false" onAction="#btnEmprestimo_excluir" text="Excluir" />
-      <GridPane layoutX="461.0" layoutY="54.0" prefHeight="199.0" prefWidth="190.0">
+      <Button fx:id="btnEmprestimo_excluir" layoutX="461.0" layoutY="359.0" mnemonicParsing="false" onAction="#btnEmprestimo_excluir" text="Excluir" />
+      <GridPane layoutX="539.0" layoutY="56.0" prefHeight="197.0" prefWidth="208.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -32,16 +33,16 @@
             <Label text="Data" />
             <Label text="Data Prevista" GridPane.rowIndex="1" />
             <Label text="Data de Entrega" GridPane.rowIndex="2" />
-             <Label text="Livro (Cópia)" GridPane.rowIndex="3" />
-            <ComboBox fx:id="cboLivro" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <DatePicker GridPane.columnIndex="1" />
-            <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Livro (Cópia)" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cboCopia" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <DatePicker fx:id="txtData" GridPane.columnIndex="1" />
+            <DatePicker fx:id="txtDataPrevista" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="txtDataEntrega" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="cboLeitor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label text="Leitor" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <Label layoutX="17.0" layoutY="21.0" text="Empréstimo" />
-      <Button fx:id="btnEmprestimo_salvar" layoutX="530.0" layoutY="273.0" mnemonicParsing="false" onAction="#btnEmprestimo_salvar" text="Salvar" />
+      <Button fx:id="btnEmprestimo_salvar" layoutX="617.0" layoutY="271.0" mnemonicParsing="false" onAction="#btnEmprestimo_salvar" text="Salvar" />
    </children>
 </AnchorPane>

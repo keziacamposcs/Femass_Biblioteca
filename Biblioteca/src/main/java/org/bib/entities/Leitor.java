@@ -24,4 +24,10 @@ public class Leitor {
 
     @OneToMany(mappedBy = "leitor")
     private List<Emprestimo> emprestimos;
+
+    @Override
+    public String toString() {
+        return nomeLeitor; 
+    }
+
 }
