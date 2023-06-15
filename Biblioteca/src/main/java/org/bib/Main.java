@@ -8,7 +8,7 @@ import org.bib.entities.Usuario;
 
 
 public class Main {
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         EntryPoint.main(args);
         verificarEInserirUsuario();
     }

@@ -1,10 +1,7 @@
 package org.bib.dao;
 
-import org.bib.Controller.UsuarioController;
 import org.bib.entities.Usuario;
 import jakarta.persistence.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 public class UsuarioDao extends Dao<Usuario> {
     

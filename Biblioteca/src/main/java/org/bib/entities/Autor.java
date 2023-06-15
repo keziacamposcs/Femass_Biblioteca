@@ -1,8 +1,6 @@
 package org.bib.entities;
 
 import jakarta.persistence.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import lombok.*;
 import java.util.List;
 

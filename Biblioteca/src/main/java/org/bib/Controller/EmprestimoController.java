@@ -1,6 +1,5 @@
 package org.bib.Controller;
 
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,8 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import org.bib.dao.CopiaDao;
 import org.bib.dao.EmprestimoDao;
@@ -20,13 +17,9 @@ import org.bib.entities.Emprestimo;
 import org.bib.entities.Leitor;
 import org.bib.entities.Livro;
 
-import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class EmprestimoController {
 
@@ -41,6 +34,7 @@ public class EmprestimoController {
     private static final int MAX_EMPRESTIMOS_ATIVOS = 5;
     private static final int PRAZO_DEVOLUCAO_ALUNO = 5;  
     private static final int PRAZO_DEVOLUCAO_PROFESSOR = 30;
+    private static final int MIN_COPIAS_DISPONIVEIS = 1;
 
 
     // Tabela
@@ -56,6 +50,8 @@ public class EmprestimoController {
     private TableColumn<Emprestimo, String> copiaColumn;
     @FXML
     private TableColumn<Emprestimo, String> leitorColumn;
+    @FXML
+    private TableColumn<Emprestimo, String> tipoColumn;
     @FXML
     private TableColumn<Emprestimo, String> statusColumn;
     // Fim - Tabela
@@ -85,8 +81,19 @@ public class EmprestimoController {
         this.daoEmprestimo = new EmprestimoDao(Emprestimo.class);
         this.daoCopia = new CopiaDao(Copia.class);
         this.daoLeitor = new LeitorDao(Leitor.class);
-            
-        cboCopia.setItems(FXCollections.observableArrayList(daoCopia.findAll()));
+
+        List<Copia> todasAsCopias = daoCopia.findAll();
+        List<Copia> copiasDisponiveis = new ArrayList<>();
+
+        for (Copia copia : todasAsCopias) {
+            List<Emprestimo> emprestimosAtivos = daoEmprestimo.findByCopiaAndStatusAtivo(copia);
+            if (emprestimosAtivos.isEmpty()) {
+                copiasDisponiveis.add(copia);
+            }
+        }
+        cboCopia.setItems(FXCollections.observableArrayList(copiasDisponiveis));
+
+        //cboCopia.setItems(FXCollections.observableArrayList(daoCopia.findAll()));
         cboLeitor.setItems(FXCollections.observableArrayList(daoLeitor.findAll()));
 
         configurarTabela();
@@ -113,7 +120,26 @@ public class EmprestimoController {
                 return new SimpleStringProperty("");
             }
         });
+
+        tipoColumn.setCellValueFactory(cellData -> {
+            Leitor leitor = cellData.getValue().getLeitor();
+            if (leitor != null) {
+                return new SimpleStringProperty(leitor instanceof Aluno ? "Aluno" : "Professor");
+            } else {
+                return new SimpleStringProperty("");
+            }
+        });
         
+        statusColumn.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getDataEntrega() == null &&
+                cellData.getValue().getDataPrevistaEntrega().isBefore(LocalDate.now())) {
+                return new SimpleStringProperty("Atrasado");
+            } else {
+                return new SimpleStringProperty("No prazo");
+            }
+        });
+
+
         // Carrega empréstimos na tabela
         TableEmprestimo.setItems(FXCollections.observableArrayList(daoEmprestimo.findAll()));
     }
@@ -141,38 +167,6 @@ public class EmprestimoController {
             cboLeitor.setValue(emprestimoSelecionado.getLeitor());
         }
     }
-/*
-    @FXML
-    private void btnEmprestimo_salvar(ActionEvent event)
-    {
-        Emprestimo emprestimo;
-        Emprestimo emprestimoSelecionado = TableEmprestimo.getSelectionModel().getSelectedItem();
-        
-        if (emprestimoSelecionado == null)
-        {
-            emprestimo = new Emprestimo();
-        }
-        else
-        {
-            emprestimo = emprestimoSelecionado;
-        }
-
-        emprestimo.setData(txtData.getValue());
-        emprestimo.setDataPrevistaEntrega(txtDataPrevista.getValue());
-        if(txtDataEntrega.getValue() != null)
-        {
-            emprestimo.setDataEntrega(txtDataEntrega.getValue());
-        }
-
-        emprestimo.setCopia(cboCopia.getValue());
-        emprestimo.setLeitor(cboLeitor.getValue());
-
-        daoEmprestimo.create(emprestimo);
-
-        TableEmprestimo.setItems(FXCollections.observableArrayList(daoEmprestimo.findAll()));
-        clearFields();
-    }
-*/
 
     @FXML
     private void btnEmprestimo_salvar(ActionEvent event) {
@@ -186,8 +180,7 @@ public class EmprestimoController {
         }
 
         Leitor leitor = cboLeitor.getValue();
-        if (leitor == null)
-        {
+        if (leitor == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Leitor não selecionado");
@@ -197,8 +190,7 @@ public class EmprestimoController {
         }
 
         List<Emprestimo> emprestimosAtivos = leitor.getEmprestimos();
-        if (emprestimosAtivos != null && emprestimosAtivos.size() >= MAX_EMPRESTIMOS_ATIVOS)
-        {
+        if (emprestimosAtivos != null && emprestimosAtivos.size() >= MAX_EMPRESTIMOS_ATIVOS) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Limite de empréstimos atingido");
@@ -207,10 +199,26 @@ public class EmprestimoController {
             return;
         }
 
+        Copia copia = cboCopia.getValue();
+        Livro livro = copia.getLivro();
+
+        int numCopias = daoCopia.countByLivro(livro);
+        if (copia == null || numCopias <= MIN_COPIAS_DISPONIVEIS) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Cópia indisponível");
+            alert.setContentText("Não é possível realizar o empréstimo, pois não há cópias disponíveis.");
+            alert.showAndWait();
+            return;
+        }
+
         emprestimo.setData(txtData.getValue());
 
-        int prazoDevolucao = leitor instanceof Aluno ? PRAZO_DEVOLUCAO_ALUNO : PRAZO_DEVOLUCAO_PROFESSOR;
-        emprestimo.setDataPrevistaEntrega(txtData.getValue().plusDays(prazoDevolucao));
+        if(leitor instanceof Aluno) {
+            emprestimo.setDataPrevistaEntrega(txtData.getValue().plusDays(PRAZO_DEVOLUCAO_ALUNO));
+        } else {
+            emprestimo.setDataPrevistaEntrega(txtData.getValue().plusDays(PRAZO_DEVOLUCAO_PROFESSOR));
+        }
 
         if(txtDataEntrega.getValue() != null) {
             emprestimo.setDataEntrega(txtDataEntrega.getValue());
@@ -224,7 +232,6 @@ public class EmprestimoController {
         TableEmprestimo.setItems(FXCollections.observableArrayList(daoEmprestimo.findAll()));
         clearFields();
     }
-
 
     @FXML
     private void btnEmprestimo_excluir(ActionEvent event)

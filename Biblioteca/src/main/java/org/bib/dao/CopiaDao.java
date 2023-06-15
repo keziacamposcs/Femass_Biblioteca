@@ -4,9 +4,6 @@ import java.util.List;
 import org.bib.entities.Copia;
 import org.bib.entities.Livro;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 public class CopiaDao extends Dao<Copia>
