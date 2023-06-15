@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -7,7 +9,7 @@
 
 <AnchorPane fx:id="telaincioanchor" prefHeight="400.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.TelaInicioController">
    <children>
-      <GridPane layoutX="529.0" layoutY="245.0" prefHeight="133.0" prefWidth="121.0">
+      <GridPane layoutX="500.0" layoutY="25.0" prefHeight="353.0" prefWidth="150.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -17,12 +19,54 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Leitores" fx:id="btnLeitor" onAction="#leitor_onAction"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Livros" GridPane.rowIndex="1" fx:id="btnLivro" onAction="#livro_onAction"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="141.0" text="Usuários" GridPane.rowIndex="2" fx:id="btnUsuario" onAction="#usuario_onAction"/>
+            <Button fx:id="btnLeitor" mnemonicParsing="false" onAction="#leitor_onAction" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #EF476F;" text="Leitores" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Button>
+            <Button fx:id="btnLivro" mnemonicParsing="false" onAction="#livro_onAction" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #EF476F;" text="Livros" textFill="WHITE" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Button>
+            <Button fx:id="btnUsuario" mnemonicParsing="false" onAction="#usuario_onAction" prefHeight="29.0" prefWidth="174.0" style="-fx-background-color: #EF476F;" text="Usuários" textFill="WHITE" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Button>
          </children>
       </GridPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#303952" height="400.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="367.0" />
-      <Button layoutX="53.0" layoutY="291.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="261.0" text="Empréstimos" fx:id="btnEmprestimo" onAction="#emprestimo_onAction"/>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#26547c" height="400.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="367.0" />
+      <Button fx:id="btnEmprestimo" layoutX="53.0" layoutY="291.0" mnemonicParsing="false" onAction="#emprestimo_onAction" prefHeight="27.0" prefWidth="261.0" style="-fx-background-color: #fcfcfc;" text="Empréstimos">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
+      <ImageView fitHeight="185.0" fitWidth="195.0" layoutX="151.0" layoutY="96.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/boy.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/schoolbook.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="78.0" fitWidth="302.0" layoutX="34.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/sisbib.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="57.0" fitWidth="57.0" layoutX="420.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/iconeleitura.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="57.0" fitWidth="57.0" layoutX="420.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/iconebook.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="57.0" fitWidth="57.0" layoutX="420.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/iconeuser.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

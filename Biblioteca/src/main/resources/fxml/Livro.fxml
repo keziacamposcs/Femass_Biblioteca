@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="livroanchorPane" prefHeight="462.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LivroController">
+
+<AnchorPane fx:id="livroanchorPane" prefHeight="430.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LivroController">
    <children>
       <TableView fx:id="TableLivro" layoutX="14.0" layoutY="52.0" onKeyPressed="#On_Key_Pressed_TableLivro" onMouseClicked="#On_Mouse_Clicked_TableLivro" prefHeight="296.0" prefWidth="526.0">
         <columns>
@@ -17,7 +19,10 @@
             <TableColumn fx:id="copiaColumn" prefWidth="75.0" text="Cópias" />
         </columns>
       </TableView>
-      <Button fx:id="btnLivro_excluir" layoutX="486.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnLivro_excluir" text="Excluir" />
+      <Button fx:id="btnLivro_excluir" layoutX="486.0" layoutY="354.0" mnemonicParsing="false" onAction="#btnLivro_excluir" style="-fx-background-color: #EF476F;" text="Excluir" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
       <GridPane layoutX="552.0" layoutY="51.0" prefHeight="296.0" prefWidth="238.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -32,23 +37,63 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="24.0" prefWidth="70.0" text="Nome" />
-            <Label text="Ano" GridPane.rowIndex="1" />
-            <Label text="Edição" GridPane.rowIndex="2" />
-             <Label text="Gênero" GridPane.rowIndex="3" />
+            <Label prefHeight="24.0" prefWidth="70.0" text="Nome">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+            <Label text="Ano" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+            <Label text="Edição" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+             <Label text="Gênero" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
              <TextField fx:id="txtAno" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <TextField fx:id="txtNome" GridPane.columnIndex="1" />
              <TextField fx:id="txtEdicao" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ListView fx:id="listGenero" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ListView fx:id="listAutor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label prefHeight="17.0" prefWidth="42.0" text="Autor" GridPane.rowIndex="4" />
-            <Label text="Cópias" GridPane.rowIndex="5" />
+            <Label prefHeight="17.0" prefWidth="42.0" text="Autor" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+            <Label text="Cópias" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
             <TextField fx:id="txtCopia" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="34.0" text="Livro" />
-      <Button fx:id="btnLivro_salvar" layoutX="645.0" layoutY="381.0" mnemonicParsing="false" onAction="#btnLivro_salvar" text="Salvar" />
-<Button fx:id="btnAutor" onAction="#autor_onAction" layoutX="21.0" layoutY="381.0" mnemonicParsing="false" text="Autores" />
-<Button fx:id="btnGenero" onAction="#genero_onAction" layoutX="110.0" layoutY="381.0" mnemonicParsing="false" text="Gêneros" />
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="34.0" text="Livro" textFill="#26547c">
+         <font>
+            <Font name="Avenir Black" size="13.0" />
+         </font></Label>
+      <Button fx:id="btnLivro_salvar" layoutX="645.0" layoutY="381.0" mnemonicParsing="false" onAction="#btnLivro_salvar" style="-fx-background-color: #EF476F;" text="Salvar" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
+<Button fx:id="btnAutor" layoutX="66.0" layoutY="369.0" mnemonicParsing="false" onAction="#autor_onAction" style="-fx-background-color: #EF476F;" text="Autores" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
+<Button fx:id="btnGenero" layoutX="209.0" layoutY="369.0" mnemonicParsing="false" onAction="#genero_onAction" style="-fx-background-color: #EF476F;" text="Gêneros" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
+      <ImageView fitHeight="43.0" fitWidth="45.0" layoutX="14.0" layoutY="362.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/iconeautor.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="43.0" fitWidth="45.0" layoutX="157.0" layoutY="362.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/iconegenero.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

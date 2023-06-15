@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="leitoranchorPane" prefHeight="425.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LeitorController">
+<AnchorPane fx:id="leitoranchorPane" prefHeight="463.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bib.Controller.LeitorController">
    <children>
-      <TableView fx:id="TableLeitor" layoutX="14.0" layoutY="39.0" onKeyPressed="#On_Key_Pressed_TableLeitor" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="296.0" prefWidth="375.0">
+      <TableView fx:id="TableLeitor" layoutX="14.0" layoutY="39.0" onKeyPressed="#On_Key_Pressed_TableLeitor" onMouseClicked="#On_Mouse_Clicked_TableLeitor" prefHeight="286.0" prefWidth="375.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="75.0" text="Id" />
           <TableColumn fx:id="nomeColumn" prefWidth="75.0" text="Nome" />
@@ -15,7 +17,25 @@
             <TableColumn fx:id="usuarioColumn" prefWidth="75.0" text="Usuario" />
         </columns>
       </TableView>
-      <Button fx:id="btnLeitor_excluir" layoutX="336.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnLeitor_excluir" text="Excluir" />
+      <Button fx:id="btnLeitor_excluir" layoutX="332.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnLeitor_excluir" style="-fx-background-color: #EF476F;" text="Excluir" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
+      <Pane layoutY="373.0" prefHeight="90.0" prefWidth="713.0" style="-fx-background-color: #26547C;">
+         <children>
+            <Button fx:id="btnProfessor" layoutX="89.0" layoutY="42.0" mnemonicParsing="false" onAction="#professor_onAction" style="-fx-background-color: #FFD166;" text="Nova Formação">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font>
+            </Button>
+            <Label layoutX="89.0" layoutY="19.0" text="Para Professores:" textFill="WHITE" />
+            <ImageView fitHeight="53.0" fitWidth="43.0" layoutX="27.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/iconeformacao.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
       <GridPane layoutX="413.0" layoutY="49.0" prefHeight="254.0" prefWidth="230.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,23 +50,42 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Nome" />
-            <Label text="Telefone" GridPane.rowIndex="1" />
-            <Label text="E-mail" GridPane.rowIndex="2" />
+            <Label text="Nome">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+            <Label text="Telefone" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
+            <Label text="E-mail" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></Label>
              <Label text="Usuário" GridPane.rowIndex="3" />
              <TextField fx:id="txtTelefone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
              <TextField fx:id="txtNome" GridPane.columnIndex="1" />
              <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="cboUsuario" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <RadioButton fx:id="radioProfessor" mnemonicParsing="false" text="Professor" GridPane.rowIndex="4" />
+            <RadioButton fx:id="radioProfessor" mnemonicParsing="false" text="Professor" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></RadioButton>
             <ComboBox fx:id="cboFormacao" prefHeight="27.0" prefWidth="114.0" promptText="Formação" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <RadioButton fx:id="radioAluno" mnemonicParsing="false" text="Aluno" GridPane.rowIndex="5" />
+            <RadioButton fx:id="radioAluno" mnemonicParsing="false" text="Aluno" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Avenir Roman" size="13.0" />
+               </font></RadioButton>
             <TextField fx:id="txtMatricula" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <Label layoutX="14.0" layoutY="14.0" text="Leitor" />
-      <Button fx:id="btnLeitor_salvar" onAction="#btnLeitor_salvar" layoutX="502.0" layoutY="335.0" mnemonicParsing="false"  text="Salvar" />
-      <Button fx:id="btnProfessor" onAction="#professor_onAction" layoutX="14.0" layoutY="374.0" mnemonicParsing="false" text="Nova Formação" />
-      <Label layoutX="14.0" layoutY="354.0" text="Para Professores:" />
+      <Label layoutX="14.0" layoutY="14.0" text="Leitor" textFill="#26547c">
+         <font>
+            <Font name="Avenir Black" size="13.0" />
+         </font></Label>
+      <Button fx:id="btnLeitor_salvar" layoutX="502.0" layoutY="335.0" mnemonicParsing="false" onAction="#btnLeitor_salvar" style="-fx-background-color: EF476F;" text="Salvar" textFill="WHITE">
+         <font>
+            <Font name="Avenir Roman" size="13.0" />
+         </font></Button>
    </children>
 </AnchorPane>

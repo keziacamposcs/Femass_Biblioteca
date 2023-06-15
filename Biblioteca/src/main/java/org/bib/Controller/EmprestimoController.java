@@ -167,7 +167,7 @@ public class EmprestimoController {
             cboLeitor.setValue(emprestimoSelecionado.getLeitor());
         }
     }
-
+/*
     @FXML
     private void btnEmprestimo_salvar(ActionEvent event) {
         Emprestimo emprestimo;
@@ -228,6 +228,86 @@ public class EmprestimoController {
         emprestimo.setLeitor(leitor);
 
         daoEmprestimo.create(emprestimo);
+
+        TableEmprestimo.setItems(FXCollections.observableArrayList(daoEmprestimo.findAll()));
+        clearFields();
+    }
+*/
+
+    @FXML
+    private void btnEmprestimo_salvar(ActionEvent event) {
+        Emprestimo emprestimo;
+        Emprestimo emprestimoSelecionado = TableEmprestimo.getSelectionModel().getSelectedItem();
+
+        if (emprestimoSelecionado == null) {
+            emprestimo = new Emprestimo();
+        } else {
+            emprestimo = emprestimoSelecionado;
+        }
+
+        Leitor leitor = cboLeitor.getValue();
+        if (leitor == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Leitor não selecionado");
+            alert.setContentText("Por favor, selecione um leitor antes de realizar um empréstimo.");
+            alert.showAndWait();
+            return;
+        }
+
+        List<Emprestimo> emprestimosAtivos = leitor.getEmprestimos();
+        if (emprestimosAtivos != null && emprestimosAtivos.size() >= MAX_EMPRESTIMOS_ATIVOS) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Limite de empréstimos atingido");
+            alert.setContentText("Este leitor já tem 5 empréstimos ativos.");
+            alert.showAndWait();
+            return;
+        }
+
+        Copia copia = cboCopia.getValue();
+        if (copia == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Cópia não selecionada");
+            alert.setContentText("Por favor, selecione uma cópia antes de realizar um empréstimo.");
+            alert.showAndWait();
+            return;
+        }
+
+        Livro livro = copia.getLivro();
+        int numCopias = daoCopia.countByLivro(livro);
+        if (numCopias <= MIN_COPIAS_DISPONIVEIS) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Cópia indisponível");
+            alert.setContentText("Não é possível realizar o empréstimo, pois não há cópias disponíveis.");
+            alert.showAndWait();
+            return;
+        }
+
+        emprestimo.setData(txtData.getValue());
+
+        if (leitor instanceof Aluno) {
+            emprestimo.setDataPrevistaEntrega(txtData.getValue().plusDays(PRAZO_DEVOLUCAO_ALUNO));
+        } else {
+            emprestimo.setDataPrevistaEntrega(txtData.getValue().plusDays(PRAZO_DEVOLUCAO_PROFESSOR));
+        }
+
+        if (txtDataEntrega.getValue() != null) {
+            emprestimo.setDataEntrega(txtDataEntrega.getValue());
+        }
+
+        emprestimo.setCopia(copia);
+        emprestimo.setLeitor(leitor);
+
+        if (emprestimoSelecionado == null) {
+            // Criar novo empréstimo
+            daoEmprestimo.create(emprestimo);
+        } else {
+            // Atualizar empréstimo existente
+            daoEmprestimo.update(emprestimo);
+        }
 
         TableEmprestimo.setItems(FXCollections.observableArrayList(daoEmprestimo.findAll()));
         clearFields();
