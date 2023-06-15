@@ -16,7 +16,7 @@
          <font>
             <Font name="Avenir Roman" size="13.0" />
          </font></Button>
-      <GridPane layoutX="144.0" layoutY="54.0" prefHeight="142.0" prefWidth="186.0">
+      <GridPane layoutX="144.0" layoutY="54.0" prefHeight="54.0" prefWidth="186.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.0" minWidth="10.0" prefWidth="66.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="120.0" />
@@ -36,7 +36,7 @@
          <font>
             <Font name="Avenir Black" size="13.0" />
          </font></Label>
-      <Button fx:id="btnProfessor_salvar" layoutX="211.0" layoutY="186.0" mnemonicParsing="false" onAction="#btnProfessor_salvar" style="-fx-background-color: #EF476F;" text="Salvar" textFill="WHITE">
+      <Button fx:id="btnProfessor_salvar" layoutX="211.0" layoutY="117.0" mnemonicParsing="false" onAction="#btnProfessor_salvar" style="-fx-background-color: #EF476F;" text="Salvar" textFill="WHITE">
          <font>
             <Font name="Avenir Roman" size="13.0" />
          </font></Button>
