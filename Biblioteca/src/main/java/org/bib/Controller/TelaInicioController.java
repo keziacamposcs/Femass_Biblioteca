@@ -57,7 +57,9 @@ public class TelaInicioController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Livro.fxml"));
             Scene scene = new Scene(root);
-            Stage stage = (Stage) telaincioanchor.getScene().getWindow();
+                        Stage stage = new Stage();
+
+            //Stage stage = (Stage) telaincioanchor.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
